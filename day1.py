@@ -1,4 +1,3 @@
-from numpy import loadtxt
 from aocd.post import submit
 
 def getFirstNum(string):
@@ -10,23 +9,27 @@ def getFirstNum(string):
 
 def findTxtNum(string, reversed=False):
     txt_nums = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
-
     for i in range(len(string)):
-
         s = string[i: i+5]
-
         for n, num in enumerate(txt_nums):
             if reversed:
                 num = num[::-1]
-
             if num in s:
                 return str(n+1)
-        
     return None
 
 if __name__ == "__main__":
-    data = loadtxt('1.txt', dtype=str)
-    
+    with open("1.txt", "r") as f:
+        data = f.read().splitlines()
+        f.close()
+        
+#     data = '''two1nine
+# eightwothree
+# abcone2threexyz
+# xtwone3four
+# 4nineeightseven2
+# zoneight234
+# 7pqrstsixteen'''.splitlines()
     result = 0
 
     for row in data:
