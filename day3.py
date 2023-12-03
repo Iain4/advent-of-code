@@ -66,14 +66,12 @@ def part_2(data: list) -> list:
     # returns list of tuples of:
     # (value, (star's index in data))
     star_nums = []
-    star_pos = []
     for n, row in enumerate(data):
         nums = find_nums(row)
         for num in nums:
             star = check_for_star(data, n, num[1])
             if star:
                 star_nums += [(num[0], star)]
-                star_pos += [star]
 
     total = 0
     for i in range(len(star_nums)-1):
@@ -84,7 +82,7 @@ def part_2(data: list) -> list:
                 total += num_1[0] * num_2[0]
     return total
 
-def check_for_star(data: list, row_num: int, num_points: tuple) -> bool:
+def check_for_star(data: list, row_num: int, num_points: tuple) -> tuple|bool:
     # checks if a symbol is around the number
     start = num_points[0] - 1
     if start < 0:
@@ -104,14 +102,14 @@ def check_for_star(data: list, row_num: int, num_points: tuple) -> bool:
         row = data[i]
         for j, char in enumerate(row):
             if char == '*' and j in range(start,end):
-                return True, (i,j)
+                return (i,j)
     return False
 
 answer_1 = part_1(data)
-print(answer_1)
+print(f'part 1: {answer_1}')
 
 answer_2 = part_2(data)
-print(answer_2)
+print(f'part 2: {answer_2}')
 
 # submit(
 #     session=session,

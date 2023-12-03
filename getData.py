@@ -1,7 +1,7 @@
 import aocd
 
-# session = "session_token"
-session = "session_token"
+# session = "session_token" # work laptop
+session = "session_token" # pc
 
 filename = "3.txt"
 
