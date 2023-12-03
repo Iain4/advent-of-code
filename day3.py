@@ -14,7 +14,8 @@ def find_nums(row: str) -> list:
     while i < len(row):
         if row[i].isdigit():
             start = i
-            end = i+1
+            i += 1
+            end = i
             while i < len(row):
                 if not row[i].isdigit():
                     break
