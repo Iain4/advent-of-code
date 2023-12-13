@@ -1,11 +1,11 @@
-import aocd
+from aocd import get_data
 
-session = "session_token" # work laptop
-# session = "session_token" # pc
+# session = "session_token" # work laptop
+session = "session_token" # pc
 
-filename = "4.txt"
+filename = "5.txt"
 
-data = aocd.get_data(day=4, year=2023, session=session)
+data = get_data(day=5, year=2023, session=session)
 
 with open(filename, "w") as f:
     f.write(data)
