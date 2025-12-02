@@ -1,11 +1,10 @@
 from aocd import get_data
 
-# session = "session_token" # work laptop
-session = "session_token" # pc
+session = "session_token"
 
-filename = "5.txt"
+filename = "1.txt"
 
-data = get_data(day=5, year=2023, session=session)
+data = get_data(day=1, year=2025, session=session)
 
 with open(filename, "w") as f:
     f.write(data)
