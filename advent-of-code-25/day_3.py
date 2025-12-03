@@ -1,12 +1,9 @@
 
 from aocd.post import submit
-from getData import path
-
 from typing import List
 
 
-def find_joltage(bank: str):
-    
+def find_joltage(bank: str) -> int:
     vals = [int(i) for i in bank]
     vals_ordered = sorted(vals)
     first_val = vals_ordered[-1]
@@ -16,6 +13,9 @@ def find_joltage(bank: str):
         return str(first_val) * 2
     
     index_1 = vals.index(first_val)
+    
+    if index_1 == len(vals):
+        return int(str(vals_ordered[-2]) + str(first_val))
 
     # need to fix the case where the highest value is the last on in the list
     scnd_val = sorted(vals[index_1+1:])[-1]
@@ -35,7 +35,7 @@ def part_1(data: List[str]):
 
 if __name__ == "main":
 
-    with open(path + "3.txt", "r") as f:
+    with open("3.txt", "r") as f:
         data = f.read().splitlines()
         f.close()
 

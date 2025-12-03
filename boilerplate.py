@@ -1,9 +1,8 @@
-def boilerplate(day:int) -> str:
+def boilerplate(day:int, path: str) -> str:
     """Returns some baisc boilerplate code for the advent of code problems"""
 
     return f"""
 from aocd.post import submit
-from getData import path
 
 def part_1(data):
     ...
@@ -15,7 +14,7 @@ def part_2(data):
 
 if __name__ == "main":
 
-    with open(path + f"{day}.txt", "r") as f:
+    with open(f{day}.txt", "r") as f:
         data = f.read()
         f.close()
 
