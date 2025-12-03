@@ -20,7 +20,7 @@ def main():
         f.close()
 
     with open(code_filename, "w") as f:
-        f.write(boilerplate(day))
+        f.write(boilerplate(day, path))
         f.close()
 
 

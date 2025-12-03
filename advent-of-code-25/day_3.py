@@ -1,6 +1,14 @@
+import sys
+sys.path.append("..")
+with open("session.txt", "r") as s:
+    session = s.read()
+    print(session)
+    s.close()
 
 from aocd.post import submit
 from typing import List
+path = "./advent-of-code-25/"
+
 
 
 def find_joltage(bank: str) -> int:
@@ -10,11 +18,11 @@ def find_joltage(bank: str) -> int:
 
     # quick redunancy check
     if first_val == vals_ordered[-2]:
-        return str(first_val) * 2
+        return int(str(first_val) * 2)
     
     index_1 = vals.index(first_val)
     
-    if index_1 == len(vals):
+    if index_1 == len(vals) - 1:
         return int(str(vals_ordered[-2]) + str(first_val))
 
     # need to fix the case where the highest value is the last on in the list
@@ -33,12 +41,11 @@ def part_1(data: List[str]):
     return jolt_tot
 
 
-if __name__ == "main":
+if __name__ == "__main__":
 
-    with open("3.txt", "r") as f:
+    with open(path+"3.txt", "r") as f:
         data = f.read().splitlines()
         f.close()
 
-    print(part_1(data))
-    
-    # submit(part_1(data))
+    # print(part_1(data))
+    submit(part_1(data), session=session)
