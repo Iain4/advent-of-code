@@ -1,8 +1,10 @@
 from aocd import get_data
 
-day = 2
+day = 3
 
-session = "session_token"
+with open("session.txt", "r") as f:
+    session = f.read()
+    f.close()
 
 filename = f"{day}.txt"
 
