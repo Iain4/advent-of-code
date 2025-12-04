@@ -3,16 +3,15 @@ def boilerplate(day:int, path: str) -> str:
 
     return f"""
 import sys
-sys.path.append("..")
-
 from aocd.post import submit
+
+path =  sys.path[0]
+sys.path.append("..")
 
 with open("session.txt", "r") as s:
     session = s.read()
     s.close()
-
-path = "{path}"
-
+    
 
 def part_1(data):
     ...
@@ -24,10 +23,13 @@ def part_2(data):
 
 if __name__ == "__main__":
 
-    with open(path + f"{day}.txt", "r") as f:
+    with open(path + f"/{day}.txt", "r") as f:
         data = f.read()
         f.close()
 
+    print(part_1(data))
+    # print(part_2(data))
+    
     # submit(part_1(data), session=session)
 """
     
