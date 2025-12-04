@@ -9,7 +9,6 @@ from aocd.post import submit
 
 with open("session.txt", "r") as s:
     session = s.read()
-    print(session)
     s.close()
 
 path = "{path}"
