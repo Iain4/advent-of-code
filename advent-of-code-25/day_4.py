@@ -40,20 +40,35 @@ def get_coord_points(coord: int, coord_max: int, coord_min: int = 0) -> List:
     return [coord-1, coord, coord+1]
 
 
-def part_1(data):
-    accessible_paper = 0
+def find_accessible_paper(data):
+    accessible_paper = []
     for r, text in enumerate(data):
         for c in range(len(text)):
             if text[c] == '.':
                 continue
             elif can_forklift_access(data, r, c):
-                accessible_paper += 1
+                accessible_paper += [(r,c)]
 
     return accessible_paper
 
 
+def remove_accessed_paper(data: List[str], accessible_paper: List[tuple]) -> List[str]:
+    for (r, c) in accessible_paper:
+        text = data[r]
+        data[r]  = f"{text[:c]}.{text[c+1:]}"
+    return data
+
+
 def part_2(data):
-    ...
+    num_removed = 0
+
+    while True:
+        accessible = find_accessible_paper(data)
+        if len(accessible) == 0:
+            return num_removed
+        
+        num_removed += len(accessible)
+        data = remove_accessed_paper(data, accessible)
 
 
 if __name__ == "__main__":
@@ -62,7 +77,7 @@ if __name__ == "__main__":
         data = f.read().splitlines()
         f.close()
 
-    # print(part_1(data))
+    # print(len(find_accessible_paper(data)))
     # print(part_2(data))
 
-    # submit(part_1(data), session=session)
+    submit(part_2(data), session=session)
