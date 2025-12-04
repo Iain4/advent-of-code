@@ -64,7 +64,12 @@ def part_2(data):
 
     while True:
         accessible = find_accessible_paper(data)
+
         if len(accessible) == 0:
+            # with open("4_after.txt", "w") as f:
+            #     for line in data:
+            #         f.write(line + "\n")
+            #     f.close()                    
             return num_removed
         
         num_removed += len(accessible)
@@ -78,6 +83,6 @@ if __name__ == "__main__":
         f.close()
 
     # print(len(find_accessible_paper(data)))
-    # print(part_2(data))
+    print(part_2(data))
 
-    submit(part_2(data), session=session)
+    # submit(part_2(data), session=session)
