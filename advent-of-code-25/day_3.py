@@ -34,15 +34,14 @@ def part_1(data: List[str]):
     jolt_tot = 0
     for bank in data:
 
-        joltage = find_joltage(bank)
+        # joltage = find_joltage(bank)
+        joltage = int(find_overdrive_joltage(bank, 2))
         jolt_tot += joltage
     
     return jolt_tot
 
 
 def find_overdrive_joltage(bank:str, max_batteries: int, batteries_used: int = 0, current_joltage: str = '', search_order: int = 1):
-    # this recursivly finds the 12 digits going left to right in the bank that together makes the largest value
-
     batteries_left = max_batteries - batteries_used
     if batteries_left == 0:
         return current_joltage
@@ -60,7 +59,7 @@ def find_overdrive_joltage(bank:str, max_batteries: int, batteries_used: int = 0
     # recursively looking down the sorted list until there is enough batteries left
     if len(vals[f_index:]) < batteries_left:
         current_joltage = find_overdrive_joltage(bank, max_batteries, batteries_used, current_joltage, search_order+1)
-    
+    # next step
     else:
         current_joltage = find_overdrive_joltage(bank[f_index+1:], max_batteries, batteries_used+1, current_joltage+str(first), 1)
 
@@ -80,7 +79,7 @@ if __name__ == "__main__":
         data = f.read().splitlines()
         f.close()
 
-    # print(part_1(data))
-    # print(part_2(data))
+    print(f"answer for part 1: {part_1(data)}")
+    print(f"answer for part 2: {part_2(data)}")
 
-    submit(part_2(data), session=session)
+    # submit(part_2(data), session=session)
