@@ -30,7 +30,7 @@ if __name__ == "__main__":
     print(part_1(data))
     # print(part_2(data))
     
-    # submit(part_1(data), session=session)
+    # submit(part_1(data), session=session, day={day})
 """
     
     
