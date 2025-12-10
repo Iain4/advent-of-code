@@ -16,6 +16,7 @@ with open("session.txt", "r") as s:
 def parse_data(data):
     return [list(map(int, s.split(','))) for s in data]
 
+
 def dist_sqrd(p_1, p_2):
     return (p_1[0] - p_2[0])**2 + (p_1[1] - p_2[1])**2 + (p_1[2] - p_2[2])**2 
 
@@ -29,34 +30,45 @@ def get_distances(data):
     return deltas
 
 
-def make_networks(delta_matrix, connection_number):
-    distances = np.sort(delta_matrix[delta_matrix != 0.0])[:connection_number]
+def new_connection(connection, networks):
+    in_net = -1 # using -1 instead of false so it works for the first element of the list
+    for i, net in enumerate(networks):
+        c0 = connection[0] in net
+        c1 = connection[1] in net
+
+        if c0 or c1:
+            if in_net == -1:
+                in_net = i
+                if not c0:
+                    networks[i] += [connection[0]]
+                elif not c1:
+                    networks[i] += [connection[1]]
+
+            else:
+                networks[in_net] = list(set(networks[in_net]).union(net))
+                networks.remove(net)
+                break # shouldn't  be able to match more than twice
+
+    if in_net == -1:
+        networks += [connection]
+    return networks
+
+
+def make_networks(delta_matrix, connec_num: int | None = None):
+    distances = np.sort(delta_matrix[delta_matrix != 0.0])
+    if connec_num:
+        distances = distances[:connec_num]
     networks = []
     for d in distances:
         connection = np.where(delta_matrix == d)
         connection = [connection[0][0], connection[1][0]]
+        networks = new_connection(connection, networks)
+        
+        if not connec_num and len(networks[0]) == delta_matrix.shape[0]:
+            return connection
 
-        in_net = -1 # using -1 instead of false so it works for the first element of the list
-        for i, net in enumerate(networks):
-            c0 = connection[0] in net
-            c1 = connection[1] in net
-
-            if c0 or c1:
-                if in_net == -1:
-                    in_net = i
-                    if not c0:
-                        networks[i] += [connection[0]]
-                    elif not c1:
-                        networks[i] += [connection[1]]
-                        
-                else:
-                    networks[in_net] = list(set(networks[in_net]).union(net))
-                    networks.remove(net)
-                    break # shouldn't  be able to match more than twice
-
-        if in_net == -1:
-            networks += [connection]
-
+    if not connec_num:
+        raise Warning("Network hasn't reached required length")
     return sorted(networks, key=len)[::-1]
 
 
@@ -73,7 +85,10 @@ def part_1(data):
 
 
 def part_2(data):
-    ...
+    data = parse_data(data)
+    deltas = get_distances(data)
+    last_connec = make_networks(deltas)
+    return data[last_connec[0]][0] * data[last_connec[1]][0]
 
 
 if __name__ == "__main__":
@@ -82,7 +97,7 @@ if __name__ == "__main__":
         data = f.readlines()
         f.close()
 
-    print(part_1(data))
-    # print(part_2(data))
+    # print(part_1(data))
+    print(part_2(data))
     
     # submit(part_1(data), session=session, day=8)
