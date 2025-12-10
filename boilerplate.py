@@ -4,6 +4,7 @@ def boilerplate(day:int, path: str) -> str:
     return f"""
 import sys
 from aocd.post import submit
+from typing import List
 
 path =  sys.path[0]
 sys.path.append("..")
