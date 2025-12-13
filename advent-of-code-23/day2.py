@@ -1,5 +1,5 @@
 from aocd.post import submit
-from getData import session
+# from getData import session
 
 with open("2.txt", "r") as f:
     data = f.read()

@@ -13,19 +13,21 @@ with open("session.txt", "r") as s:
     session = s.read()
     s.close()
     
+def parse_data(data:
+    ...
 
 def part_1(data):
-    ...
+    data = parse_data(data)
 
 
 def part_2(data):
-    ...
+    data = parse_data(data)
 
 
 if __name__ == "__main__":
 
     with open(path + f"/{day}.txt", "r") as f:
-        data = f.read()
+        data = f.readlines()
         f.close()
 
     print(part_1(data))

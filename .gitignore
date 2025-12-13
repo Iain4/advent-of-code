@@ -1,4 +1,6 @@
 **/__pycache__/
 
-.adventVenv
+.venv
 session.txt
+
+**/test.txtw
