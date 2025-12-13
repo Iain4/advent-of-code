@@ -1,7 +1,4 @@
-def boilerplate(day:int, path: str) -> str:
-    """Returns some baisc boilerplate code for the advent of code problems"""
 
-    return f"""
 import sys
 from aocd.post import submit
 from typing import List
@@ -26,14 +23,11 @@ def part_2(data):
 
 if __name__ == "__main__":
 
-    with open(path + f"/{day}.txt", "r") as f:
+    with open(path + f"/11.txt", "r") as f:
         data = f.readlines()
         f.close()
 
     print(part_1(data))
     # print(part_2(data))
     
-    # submit(part_1(data), session=session, day={day})
-"""
-    
-    
+    # submit(part_1(data), session=session, day=11)

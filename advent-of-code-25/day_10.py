@@ -6,6 +6,8 @@ from typing import List
 import cProfile
 import pstats
 
+ # TODO: Clean up the unsuccessful part 2 bits from this
+
 
 path =  sys.path[0]
 sys.path.append("..")
@@ -15,7 +17,7 @@ with open("session.txt", "r") as s:
     s.close()
     
 
-def parse_data(data, for_joltage = False):
+def parse_data(data, for_part_2 = False):
     # The lights and buttons are binary representations of being on/off / which light they change
     # They are decimal integers though because that what python does
     # Both the lights and buttons are done the same so I can just xor them later
@@ -26,18 +28,18 @@ def parse_data(data, for_joltage = False):
 
         joltage = line.pop()
 
-        if for_joltage:
-            joltage = [int(j) for j in joltage.strip("{}").split(",")]
+        if for_part_2:
+            joltage = jolt_list_to_int([int(j) for j in joltage.strip("{}").split(",")])
+
             # this button bit is horrendous but it works
-            buttons = []
+            buttons = set()
             for bs in line[1:]:
                 bs = list(map(int, bs.strip("()").split(",")))
                 new_button = [ 
                     1 if x in bs else 0
                     for x in range(bs[-1] + 1)
                 ]
-
-                buttons += [new_button]
+                buttons.add(jolt_list_to_int(new_button))
 
             data[i] = [joltage, buttons]
 
@@ -60,31 +62,25 @@ def parse_data(data, for_joltage = False):
     return data
 
 
-def search_next_depth(buttons: List[list], goal, search_func):
-    new_bs = []
-    done = False
 
-    # even depth search
-    if len(buttons) == 1:
-        buttons = buttons[0]
-        for i, b1 in enumerate(buttons):
-            res, done = search_func(b1, buttons[i:], goal)
-            new_bs += res
-            if done:
-                return new_bs, True
-        return new_bs, False
+def search_next_depth(buttons: list, goal, search_func):
+    new_bs = set()
+    done = False
     
-    # odd depth
-    b1s, b2s = buttons[0], buttons[1]
+    if len(buttons) == 1:
+        b1s, b2s = buttons[0], buttons[0]
+    else:
+        b1s, b2s = buttons[0], buttons[1]
+
     for b1 in b1s:
         res, done = search_func(b1, b2s, goal)
-        new_bs += res
+        new_bs = new_bs.union(res)
         if done: 
             return new_bs, True
     return new_bs, False
 
 
-def recursive_search(buttons:List[list], goal, search_func, depth: int = 0, ):
+def recursive_search(buttons: list, goal, search_func, depth: int = 0, ):
     # i should properly define what the search func is / can be
     # but i'm just making this work for part 2 so hey ho
     i = int(depth/2)
@@ -94,7 +90,7 @@ def recursive_search(buttons:List[list], goal, search_func, depth: int = 0, ):
         new_buttons, done = search_next_depth(buttons[i:i+2], goal, search_func)
     buttons += [new_buttons]
 
-    print(depth)
+    # print(depth)
 
     if done:
         return depth
@@ -116,11 +112,11 @@ def find_result(data, search_func):
         depth = recursive_search([buttons], goal, search_func)
         # 0 and 1 press cases cause and so depth 0 corresponds to 2 button presses 
         button_presses += (depth + 2)
-
+        # break
     return button_presses
 
 
-def catch_edge_cases(buttons: List[int], goal: int | List[int]):
+def catch_edge_cases(buttons: int, goal: int | List[int]):
     # need to check if all the joltages are 0
     if goal == 0:
         return 0, True
@@ -130,10 +126,10 @@ def catch_edge_cases(buttons: List[int], goal: int | List[int]):
 
 
 def int_xor_list(but1: int, buttons: List[int], goal: int):
-    res = []
+    res = set()
     for b in buttons:
         val = but1 ^ b
-        res += [val]
+        res.add(val)
         if val == goal:
             return res, True
     return res, False
@@ -145,30 +141,18 @@ def part_1(data):
     return presses
 
 
-def add_jolt_buttons(b_longer, b_shorter):
-    res = b_longer.copy()
-    for i, v in enumerate(b_shorter):
-        res[i] += v
+def jolt_list_to_int(values: List[int]) -> int:
+    res = 0
+    for i, val in enumerate(values):
+        res += val * 1000 ** i
     return res
 
 
 def joltage_adder(but1, buttons, goal):
-    new_buttons = []
+    new_buttons = set()
     for b in buttons:
-        skip = False
-        for j, v in enumerate(b):
-            if v > goal[j]:
-                skip = True
-                buttons.remove(b)
-                break
-        if skip:
-            continue
-        if len(but1) > len(b):
-            val = add_jolt_buttons(but1, b)
-        else:
-            val = add_jolt_buttons(b, but1)
-        new_buttons += [val]
-
+        val = but1 + b
+        new_buttons.add(val)
         if val == goal:
             return new_buttons, True
     return new_buttons, False
@@ -182,7 +166,7 @@ def part_2(data):
 
 if __name__ == "__main__":
 
-    with open(path + f"/10.txt", "r") as f:
+    with open(path + f"/10test.txt", "r") as f:
         data = f.readlines()
         f.close()
 

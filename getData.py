@@ -2,7 +2,7 @@ from aocd import get_data
 from boilerplate import boilerplate
 
 path = "./advent-of-code-25/"
-day = 10
+day = 11
 
 
 def main():
